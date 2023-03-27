@@ -1,14 +1,31 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<taglib xmlns="http://java.sun.com/xml/ns/javaee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
-        version="2.1">
+<configuration status="INFO">
 
-    <tlib-version>1.0</tlib-version>
-    <short-name>myshortname</short-name>
-    <uri>http://mycompany.com</uri>
+    <Appenders>
+        <!-- 콜솔 -->
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout charset="UTF-8" pattern="%d{hh:mm:ss} %5p [%c] %m%n"/>
+        </Console>
+    </Appenders>
 
-    <!-- Invoke 'Generate' action to add tags or functions -->
+    <loggers>
+        <logger name="org.springframework" level="INFO" additivity="false">
+            <appender-ref ref="console" />
+        </logger>
 
-</taglib>
+        <logger name="org.zerock" level="INFO" additivity="false">
+            <appender-ref ref="console" />
+        </logger>
+
+        <logger name="org.zerock.springex.mapper" level="TRACE" additivity="false">
+            <appender-ref ref="console" />
+        </logger>
+
+        <root level="INFO" additivity="false">
+            <AppenderRef ref="console"/>
+        </root>
+
+    </loggers>
+
+</configuration>
