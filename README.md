@@ -43,5 +43,5 @@ Spring에서 MVC 모델
     - 게시글    
   
   
-  
+  ![img.png](img.png)
   
