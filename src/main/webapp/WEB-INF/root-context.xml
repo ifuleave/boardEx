@@ -4,13 +4,12 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-        <context:component-scan base-package="org.zerock.boardex.sample"></context:component-scan>
 
         <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="org.mariadb.jdbc.Driver"></property>
-                <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/webdb"></property>
-                <property name="username" value="webuser"></property>
-                <property name="password" value="webuser"></property>
+                <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/boarddb"></property>
+                <property name="username" value="boarddb"></property>
+                <property name="password" value="1234"></property>
                 <property name="dataSourceProperties">
                         <props>
                                 <prop key="cachePrepStmts">true</prop>
@@ -27,5 +26,8 @@
 
         <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
                 <property name="dataSource" ref="dataSource" />
+                <property name="mapperLocations" value="classpath:/mappers/**/*.xml"></property>
         </bean>
+
+        <context:component-scan base-package="org.zerock.boardex.config"/>
 </beans>
