@@ -56,27 +56,35 @@
                 <div class="card-body">
                     <form action="/todo/register" method="post">
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Title</span>
+                            <span class="input-group-text">제목</span>
                             <input type="text" name="title" class="form-control" placeholder="Title">
                         </div>
 
                         <div class="input-group mb-3">
-                            <span class="input-group-text">DueDate</span>
+                            <span class="input-group-text">날짜</span>
                             <input type="date" name="dueDate" class="form-control" placeholder="Writer">
                         </div>
 
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Writer</span>
+                            <span class="input-group-text">작성자</span>
                             <input type="text" name="Writer" class="form-control" placeholder="Writer">
                         </div>
 
                         <div class="my-4">
                             <div class="float-end">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="result" class="btn btn-secodary">Reset</button>
+                                <button type="submit" class="btn btn-primary">확인</button>
+                                <button type="result" class="btn btn-secodary">취소</button>
                             </div>
                         </div>
                     </form>
+                    <script>//p323
+                        const serverValidResult ={}
+                        <c:forEach items="${errors}" var="error">
+                        serverValidResult['${error.getField()}'] = '${error.defaultMessage}'
+                        </c:forEach>
+                        console.log(serverValidResult)
+                    </script>
+
                 </div>
             </div>
         </div>

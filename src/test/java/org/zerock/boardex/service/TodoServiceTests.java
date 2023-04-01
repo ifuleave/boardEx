@@ -20,7 +20,10 @@ public class TodoServiceTests {
 
     @Test
     public void testRegister(){
-        TodoDTO todoDTO = TodoDTO.builder().title("ttt제목테스트입니다.").dueDate(LocalDate.now()).writer("sujin01").build();
+        TodoDTO todoDTO = TodoDTO.builder()
+                .title("ttt제목테스트입니다.")
+                .dueDate(LocalDate.now())
+                .writer("sujin01").build();
         todoService.register(todoDTO);
     }
 }
