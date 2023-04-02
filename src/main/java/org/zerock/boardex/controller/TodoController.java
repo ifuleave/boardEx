@@ -1,5 +1,6 @@
 package org.zerock.boardex.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,7 +27,10 @@ public class TodoController {
 
     @RequestMapping("/list")
     public void list(Model model){
+
         log.info("todo 리스트");
+        model.addAttribute("dtoList",todoService.getAll() );
+        // model에는 dtoList라는 이름으로 목록데이터를 담았기 때문에 jsp에서 jstl을 이용해서 목록을 축력함
     }
 
     @GetMapping("/register")
@@ -41,12 +45,22 @@ public class TodoController {
 
         log.info("!!!!!!!!!!!POST TODO register!!!!!!!!!!!!");
 
-        if (bindingResult.hasErrors()){ //hasErrors를 이용해서 검증에 문제가 있다면 다시 입력화면으로
+        if (bindingResult.hasErrors()){ //hasErrors를 이용해서 검증에 문제가 있다면 다시 입력화면으로 // 여기 dueDate 에러가 난다면 formatter 처리해줘야함
             log.info("!!!!!에러++제목: 빈값안됨, 날짜 : 현재보다미래, 작성자 : 빈값안됨!!!!!!");
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+//            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/todo/register";
         }
         log.info(todoDTO);
         return "redirect:/todo/list"; //post방식으로 처리한 후 list로 돌아가야 하기때문에 문자열을 반활 할 수 있도록 처리
     }
+
+    //한개 조회
+    @GetMapping("/read")
+    public void read(Long tno, Model model){
+        TodoDTO todoDTO = todoService.getOne(tno);
+        log.info(todoDTO);
+        model.addAttribute("dto",todoDTO);
+    }
+
+
 }

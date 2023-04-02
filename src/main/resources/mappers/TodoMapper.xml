@@ -10,4 +10,12 @@
     <insert id="insert">
         insert into tbl_todo(title,dueDate,writer) values (#{title},#{dueDate},#{writer})
     </insert>
+    
+    <select id="selectAll" resultType="org.zerock.boardex.domain.TodoVO">/*JDBC의 Result Set의 한 행을 어떤 타입의 객체로 만들건지*/
+        select * from tbl_todo order by tno desc
+    </select>
+
+    <select id="selectOne" resultType="org.zerock.boardex.domain.TodoVO">
+        select * from tbl_todo where tno = #{tno}
+    </select>
 </mapper>

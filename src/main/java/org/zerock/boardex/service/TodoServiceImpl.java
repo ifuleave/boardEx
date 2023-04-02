@@ -8,6 +8,9 @@ import org.zerock.boardex.domain.TodoVO;
 import org.zerock.boardex.dto.TodoDTO;
 import org.zerock.boardex.mapper.TodoMapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 /*
 * TodoServiceImpl은 TodoService 인터페이스를 구현하여 의존성 주입을 이용해서 데이터베이스 처리를 하는 TodoMapper와 DTO,VO의 변환을 처리한는 ModelMapper를 주입
@@ -30,5 +33,21 @@ public class TodoServiceImpl implements TodoService { //service implements 받�
         TodoVO todoVO = modelMapper.map(todoDTO, TodoVO.class);
         log.info(todoVO);
         todoMapper.insert(todoVO);
+    }
+
+    //todoservice에서 작성하 getAll()
+    @Override
+    public List<TodoDTO> getAll(){
+        List<TodoDTO> dtoList = todoMapper.selectAll().stream()
+                .map(vo->modelMapper.map(vo, TodoDTO.class))
+                .collect(Collectors.toList());
+        return dtoList;
+    }
+
+    @Override
+    public TodoDTO getOne(Long tno){
+        TodoVO todoVO = todoMapper.selectOne(tno);
+        TodoDTO todoDTO = modelMapper.map(todoVO,TodoDTO.class);
+        return todoDTO;
     }
 }
