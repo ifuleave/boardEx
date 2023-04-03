@@ -56,4 +56,10 @@ public class TodoServiceImpl implements TodoService { //service implements 받�
     public void remove(Long tno){
          todoMapper.delete(tno);
     }
+
+    @Override
+    public void modify(TodoDTO todoDTO){ //modify()파라미터로 전달되는 TodoDTO를 TodoVO로 변환하고 이를 이용해서 todoMapper의 update()를 호출
+        TodoVO todoVO = modelMapper.map(todoDTO, TodoVO.class);
+        todoMapper.update(todoVO);
+    }
 }

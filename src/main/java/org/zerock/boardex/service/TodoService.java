@@ -14,4 +14,6 @@ public interface TodoService {
 
     //삭제
     void remove(Long tno);
+
+    void modify(TodoDTO todoDTO); // service/serviceImpl에서 TodoDTO를 TodoVo로 변환해서 처리해야함.
 }

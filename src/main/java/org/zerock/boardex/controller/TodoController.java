@@ -69,4 +69,21 @@ public class TodoController {
         todoService.remove(tno);
         return "redirect:/todo/list";
     }
+
+    @PostMapping("/modify") //valid를 이용해서 필요한 내용즐 검증, 문제있으면 modify로 이동,todo/modify로 이동시키려면 tno미터가 필요하므로 redirectAttributes를 이용해서 
+                               //addattribute()를 이용하고  errors라는 이름으로 bindingResult의 모든 에러들을 전달함     
+    public String modify(@Valid TodoDTO todoDTO, BindingResult bindingResult,RedirectAttributes redirectAttributes){
+        if (bindingResult.hasErrors()){
+            log.info("has errors..........");
+            redirectAttributes.addFlashAttribute("errors",bindingResult.getAllErrors());
+            redirectAttributes.addAttribute("tno",todoDTO.getTno());
+            return "redirect:/todo/modify";
+        }
+        log.info(todoDTO);
+        todoService.modify(todoDTO);
+//        redirectAttributes.addAttribute("tno",todoDTO.getTno());
+//        redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
+
+        return "redirect:/todo/list";
+    }
 }

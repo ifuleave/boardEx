@@ -91,6 +91,32 @@
                                 formObj.submit()
 
                             },false);
+
+                            const serverValidResult={} //todo,mofify에 검증된 정보를 처리하는 코드 추가! @vaild문제가 발생했다면 자바스크립트 객체로 필요할 떄 사용 할 수 있도록 함
+                            <c:forEach items="${errors}" var="error">
+                            serverValidResult['${error.getField()}'] ='${error.defaultMessage}'
+                            </c:forEach>
+                            console.log(serverValidResult)
+
+                            //modify버튼의 이벤트 처리에 form을 전송
+                            document.querySelector(".btn-primary").addEventListener("click",function (e) {
+                                e.preventDefault()
+                                e.stopPropagation()
+
+                                formObj.action="/todo/modify"
+                                formObj.method="post"
+
+                                formObj.submit()
+                            },false);
+
+                            //list 버튼 클릭시 이벤트 처리
+                            document.querySelector(".btn-secondary").addEventListener("click",function (e) {
+                                e.preventDefault()
+                                e.stopPropagation()
+
+                                self.location="/todo/list";
+
+                            },false);
                         </script>
                     </div>
                 </div>
