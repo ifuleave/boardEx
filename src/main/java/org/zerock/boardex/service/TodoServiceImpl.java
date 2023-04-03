@@ -50,4 +50,10 @@ public class TodoServiceImpl implements TodoService { //service implements 받�
         TodoDTO todoDTO = modelMapper.map(todoVO,TodoDTO.class);
         return todoDTO;
     }
+
+    //삭제
+    @Override
+    public void remove(Long tno){
+         todoMapper.delete(tno);
+    }
 }

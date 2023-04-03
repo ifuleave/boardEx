@@ -54,12 +54,19 @@ public class TodoController {
     }
 
     //한개 조회
-    @GetMapping("/read")
+    @GetMapping({"/read","/modify"}) // 수정과 삭제는 get방식으조회 후 post로 처리,get방식의 내용은 조회화면과 같지만 스프링 mvc에 여러개의 경로를 배열과 같은 표기법을 이용해서 하나의 @getMapping으로 처리할 수 있기 때문에 read(0기능을 수정해서 같은메소드 이용
     public void read(Long tno, Model model){
         TodoDTO todoDTO = todoService.getOne(tno);
         log.info(todoDTO);
         model.addAttribute("dto",todoDTO);
     }
 
+    @PostMapping("/remove")
+    public String remove(Long tno, RedirectAttributes redirectAttributes){
+        log.info("---------remove-----------");
+        log.info("tno:"+tno);
 
+        todoService.remove(tno);
+        return "redirect:/todo/list";
+    }
 }

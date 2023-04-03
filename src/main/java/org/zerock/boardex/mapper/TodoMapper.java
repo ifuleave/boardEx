@@ -15,4 +15,7 @@ public interface TodoMapper {
 
     //제목눌렀을때
     TodoVO selectOne(Long tno);
+
+    //삭제
+    void delete(Long tno);
 }

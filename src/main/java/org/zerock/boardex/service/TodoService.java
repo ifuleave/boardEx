@@ -11,4 +11,7 @@ public interface TodoService {
 
     //한개조회
     TodoDTO getOne(Long tno);
+
+    //삭제
+    void remove(Long tno);
 }
