@@ -61,8 +61,8 @@
                     <th scope="col">완료여부</th>
                 </tr>
                 </thead>
-                <tbody>
-                <c:forEach items="${dtoList}" var="dto">
+                <tbody>         <!--model에 responseDTO라는 이름으로 PageResponseDTO를 담아주었기 때문에-->
+                <c:forEach items="${responseDTO.dtoList}" var="dto">
                     <tr>
                         <th scope="row"><c:out value="${dto.tno}"/></th>
                         <td>
@@ -76,6 +76,39 @@
                 </c:forEach>
                 </tbody>
             </table>
+            <div class="float-end">
+                <ul class="pagination flex-wrap">
+                    <c:if test="${responseDTO.prev}"> <!--c:if를 이용해서 prev/next 처리하면 11페이지 이상되었을때 이전버튼이 보이게, 1~10이면 이전버튼 안보이게-->
+                        <li class="page-item">
+                            <a class="page-link" data-num="${responseDTO.start -1}">이전</a>
+                        </li>                       <!--data-num이라는 속성을 추가해서 페이지 번호를 보관하도록 구성 -->
+                    </c:if>
+                    <c:forEach begin="${responseDTO.start}" end="${responseDTO.end}" var="num">
+                        <li class="page-item ${responseDTO.page == num? "active":""}"><a class="page-link" href="#">${num}</a></li>
+                    </c:forEach>
+                    <c:if test="${responseDTO.next}">
+                        <li class="page-item">
+                            <a class="page-link" data-num="${responseDTO.end+1}">다음</a>
+                        </li>
+                    </c:if>
+                </ul>
+            </div>
+            <script>
+                document.querySelector(".pagination").addEventListener("click",function (e){
+                    e.preventDefault()
+                    e.stopPropagation()
+
+                    const target = e.target
+                    if(target.tagName !== 'A'){
+                        return
+                    }
+                    const num = target.getAttribute("data-num") //a태그를 클릭했을때만 data-num속성값을 읽어와서 현재주소를 변경하는 방식으로 작성
+                    const formObj = document.querySelector("form");
+                    formObj.innerHTML += `<input type='hidden' name='page' value='\${num}'>` //``(백틱)을 이요하면 문자열 결합에 +를 이용해야 하는 불편함을 줄일 수 있음
+                    formObj.submit();
+
+                },false)
+            </script>
         </div>
     </div>
 </div>

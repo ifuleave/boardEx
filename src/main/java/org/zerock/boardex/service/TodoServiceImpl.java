@@ -5,6 +5,8 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.zerock.boardex.domain.TodoVO;
+import org.zerock.boardex.dto.PageRequestDTO;
+import org.zerock.boardex.dto.PageResponseDTO;
 import org.zerock.boardex.dto.TodoDTO;
 import org.zerock.boardex.mapper.TodoMapper;
 
@@ -36,13 +38,13 @@ public class TodoServiceImpl implements TodoService { //service implements 받�
     }
 
     //todoservice에서 작성하 getAll()
-    @Override
-    public List<TodoDTO> getAll(){
-        List<TodoDTO> dtoList = todoMapper.selectAll().stream()
-                .map(vo->modelMapper.map(vo, TodoDTO.class))
-                .collect(Collectors.toList());
-        return dtoList;
-    }
+//    @Override
+//    public List<TodoDTO> getAll(){
+//        List<TodoDTO> dtoList = todoMapper.selectAll().stream()
+//                .map(vo->modelMapper.map(vo, TodoDTO.class))
+//                .collect(Collectors.toList());
+//        return dtoList;
+//    }
 
     @Override
     public TodoDTO getOne(Long tno){
@@ -61,5 +63,22 @@ public class TodoServiceImpl implements TodoService { //service implements 받�
     public void modify(TodoDTO todoDTO){ //modify()파라미터로 전달되는 TodoDTO를 TodoVO로 변환하고 이를 이용해서 todoMapper의 update()를 호출
         TodoVO todoVO = modelMapper.map(todoDTO, TodoVO.class);
         todoMapper.update(todoVO);
+    }
+
+    @Override //페이징처리 및 조회
+    public PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO){
+        List<TodoVO> voList = todoMapper.selectList(pageRequestDTO);
+        List<TodoDTO> dtoList = voList.stream()
+                .map(vo->modelMapper.map(vo, TodoDTO.class))
+                .collect(Collectors.toList());
+
+        int total = todoMapper.getCount(pageRequestDTO);
+
+        PageResponseDTO<TodoDTO> pageResponseDTO = PageResponseDTO.<TodoDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
     }
 }

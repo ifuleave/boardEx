@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.boardex.dto.PageRequestDTO;
 import org.zerock.boardex.dto.TodoDTO;
 import org.zerock.boardex.service.TodoService;
 
@@ -24,11 +25,14 @@ public class TodoController {
 
     private final TodoService todoService;
 
-    @RequestMapping("/list")
-    public void list(Model model){
+    @GetMapping("/list") //@Valid를 이용해서 잘못된 파라미터 값들이 들어오는 경우 page1, size는 10으로 고정된 값을 처리
+    public void list(@Valid PageRequestDTO pageRequestDTO, BindingResult bindingResult, Model model){
 
-        log.info("todo 리스트");
-        model.addAttribute("dtoList",todoService.getAll() );
+        log.info(pageRequestDTO);
+        if (bindingResult.hasErrors()){
+            pageRequestDTO = PageRequestDTO.builder().build();
+        }
+        model.addAttribute("dtoList",todoService.getList(pageRequestDTO) );
         // model에는 dtoList라는 이름으로 목록데이터를 담았기 때문에 jsp에서 jstl을 이용해서 목록을 축력함
     }
 

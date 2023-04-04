@@ -1,5 +1,7 @@
 package org.zerock.boardex.service;
 
+import org.zerock.boardex.dto.PageRequestDTO;
+import org.zerock.boardex.dto.PageResponseDTO;
 import org.zerock.boardex.dto.TodoDTO;
 
 import java.util.List;
@@ -7,8 +9,9 @@ import java.util.List;
 public interface TodoService {
     void register(TodoDTO todoDTO);
 
-    List<TodoDTO> getAll();
+//    List<TodoDTO> getAll();
 
+    PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO);
     //한개조회
     TodoDTO getOne(Long tno);
 
