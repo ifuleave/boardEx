@@ -72,11 +72,12 @@
                         </div>
 
                         <script>
-                            document.querySelector(".btn-primary").addEventListener("click",function (e){
-                                self.location="/todo/modify?tno="+${dto.tno}
+                            document.querySelector(".btn-primary").addEventListener("click",function (e){ //조회화면에서 수정 화면으로 이동할때 현재페이지 정보를 유지해야하기 때문에
+                                self.location=`/todo/modify?tno=${dto.tno}&${pageRequestDTO.link}` //``(백틱)을 이용하면 문자열 결합에 +를 이용해야 하는 불편함을 줄일 수 있음
                             },false)
+                            //목록페이지로 이동하는 이벤트처리
                             document.querySelector(".btn-secondary").addEventListener("click",function (e){
-                                self.location = "/todo/list";
+                                self.location = "/todo/list?${pageRequestDTO.link}";
                             },false)
 
                         </script>

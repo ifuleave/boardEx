@@ -43,20 +43,23 @@
                     </div>
                     <div class="card-body">
                         <form action="/todo/modify" method="post">
+                            <input type="hidden" name="page" value="${pageRequestDTO.page}">
+                            <input type="hidden" name="size" value="${pageRequestDTO.size}">
+
                         <div class="input-group mb-3">
-                            <span class="input-group-text">TNO</span>
+                            <span class="input-group-text">번호</span>
                             <input type="text" name="tno" class="form-control" value='<c:out value="${dto.tno}"></c:out>' readonly>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Title</span>
-                            <input type="text" name="title" class="form-control" value='<c:out value="${dto.title}"></c:out>' readonly>
+                            <span class="input-group-text">제목</span>
+                            <input type="text" name="title" class="form-control" value='<c:out value="${dto.title}"></c:out>' >
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">DueDate</span>
-                            <input type="date" name="dueDate" class="form-control" value='<c:out value="${dto.dueDate}"></c:out>' readonly>
+                            <span class="input-group-text">날짜</span>
+                            <input type="date" name="dueDate" class="form-control" value='<c:out value="${dto.dueDate}"></c:out>' >
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Writer</span>
+                            <span class="input-group-text">작성자</span>
                             <input type="text" name="writer" class="form-control" value='<c:out value="${dto.writer}"></c:out>' readonly>
                         </div>
                         <div class="form-check">
@@ -78,20 +81,29 @@
                                 self.location="/todo/modify?tno="+${dto.tno}
                             },false)
                             document.querySelector(".btn-secondary").addEventListener("click",function (e){
-                                self.location = "/todo/list";
+
+                                self.location=`/todo/list?${pageRequestDTO.link}`
+                                //수정화면에서 다시 목록으로 가는 링크,  TodoController의 read()는 GET방식으로 동작하는 수정에서도 동일하게 처리되서
+                                //jsp에서 PageRequestDTO를 사용할 수 있따.
                             },false)
 
                             const formObj = document.querySelector("form");
                             document.querySelector(".btn-danger").addEventListener("click",function (e) {
                                 e.preventDefault()
                                 e.stopPropagation()
-                                formObj.action="/todo/remove"
+                                formObj.action=`/todo/remove?${pageRequestDTO.link}`
                                 formObj.method="post"
 
                                 formObj.submit()
 
                             },false);
+                            document.querySelector(".btn-secondary").addEventListener("click",function (e) {
+                                e.preventDefault()
+                                e.stopPropagation()
 
+                                self.location="/todo/list";
+
+                            },false);
                             const serverValidResult={} //todo,mofify에 검증된 정보를 처리하는 코드 추가! @vaild문제가 발생했다면 자바스크립트 객체로 필요할 떄 사용 할 수 있도록 함
                             <c:forEach items="${errors}" var="error">
                             serverValidResult['${error.getField()}'] ='${error.defaultMessage}'
@@ -107,15 +119,6 @@
                                 formObj.method="post"
 
                                 formObj.submit()
-                            },false);
-
-                            //list 버튼 클릭시 이벤트 처리
-                            document.querySelector(".btn-secondary").addEventListener("click",function (e) {
-                                e.preventDefault()
-                                e.stopPropagation()
-
-                                self.location="/todo/list";
-
                             },false);
                         </script>
                     </div>

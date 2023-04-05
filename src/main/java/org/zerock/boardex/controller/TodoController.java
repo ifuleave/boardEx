@@ -32,7 +32,7 @@ public class TodoController {
         if (bindingResult.hasErrors()){
             pageRequestDTO = PageRequestDTO.builder().build();
         }
-        model.addAttribute("dtoList",todoService.getList(pageRequestDTO) );
+        model.addAttribute("responseDTO",todoService.getList(pageRequestDTO) );
         // model에는 dtoList라는 이름으로 목록데이터를 담았기 때문에 jsp에서 jstl을 이용해서 목록을 축력함
     }
 
@@ -59,24 +59,27 @@ public class TodoController {
 
     //한개 조회
     @GetMapping({"/read","/modify"}) // 수정과 삭제는 get방식으조회 후 post로 처리,get방식의 내용은 조회화면과 같지만 스프링 mvc에 여러개의 경로를 배열과 같은 표기법을 이용해서 하나의 @getMapping으로 처리할 수 있기 때문에 read(0기능을 수정해서 같은메소드 이용
-    public void read(Long tno, Model model){
+    public void read(Long tno,PageRequestDTO pageRequestDTO,Model model){ //pageRequestDTO에는  page 와size가있음
         TodoDTO todoDTO = todoService.getOne(tno);
         log.info(todoDTO);
         model.addAttribute("dto",todoDTO);
     }
 
     @PostMapping("/remove")
-    public String remove(Long tno, RedirectAttributes redirectAttributes){
-        log.info("---------remove-----------");
+    public String remove(Long tno,PageRequestDTO pageRequestDTO ,RedirectAttributes redirectAttributes){
+        log.info("--------------------remove-----------------------");
         log.info("tno:"+tno);
 
         todoService.remove(tno);
+
+        redirectAttributes.addAttribute("page",1);
+        redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
         return "redirect:/todo/list";
     }
 
     @PostMapping("/modify") //valid를 이용해서 필요한 내용즐 검증, 문제있으면 modify로 이동,todo/modify로 이동시키려면 tno미터가 필요하므로 redirectAttributes를 이용해서 
                                //addattribute()를 이용하고  errors라는 이름으로 bindingResult의 모든 에러들을 전달함     
-    public String modify(@Valid TodoDTO todoDTO, BindingResult bindingResult,RedirectAttributes redirectAttributes){
+    public String modify(PageRequestDTO pageRequestDTO,@Valid TodoDTO todoDTO, BindingResult bindingResult,RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
             log.info("has errors..........");
             redirectAttributes.addFlashAttribute("errors",bindingResult.getAllErrors());
@@ -85,8 +88,8 @@ public class TodoController {
         }
         log.info(todoDTO);
         todoService.modify(todoDTO);
-//        redirectAttributes.addAttribute("tno",todoDTO.getTno());
-//        redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
+        redirectAttributes.addAttribute("tno",pageRequestDTO.getPage());
+       redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
 
         return "redirect:/todo/list";
     }

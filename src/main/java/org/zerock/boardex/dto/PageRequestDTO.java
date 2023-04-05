@@ -30,9 +30,19 @@ public class PageRequestDTO {
     @Max(value = 100)
     @Positive
     private int size =10; //한 페이지당 개수
-
+    private String link;
     public int getSkip(){ //건너뛰기의 수  페이징에서 (pre> 버튼 누를떄 적용)
         return (page -1) *10;
+    }
+
+    public String getLink(){ //페이지번호가 붙을 때는 page와 size등을 같이 전달해 주어야만 조회페이지에서 다시 목록으로 이동할때 기존페이지를 볼 수 있게 됨.
+        if (link == null){
+            StringBuilder builder = new StringBuilder();
+            builder.append("page="+this.page);
+            builder.append("&size="+this.size);
+            link = builder.toString();
+        }
+        return link;
     }
 
 }
